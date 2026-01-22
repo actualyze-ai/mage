@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mage
 
 import (
@@ -8,7 +14,6 @@ import (
 	"fmt"
 	"go/build"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -22,10 +27,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/magefile/mage/internal"
-	"github.com/magefile/mage/mg"
-	"github.com/magefile/mage/parse"
-	"github.com/magefile/mage/sh"
+	"github.com/actualyze-ai/mage/internal"
+	"github.com/actualyze-ai/mage/mg"
+	"github.com/actualyze-ai/mage/parse"
+	"github.com/actualyze-ai/mage/sh"
 )
 
 // magicRebuildKey is used when hashing the output binary to ensure that we get
@@ -67,7 +72,7 @@ const (
 	initFile = "magefile.go"
 )
 
-var debug = log.New(ioutil.Discard, "DEBUG: ", log.Ltime|log.Lmicroseconds)
+var debug = log.New(io.Discard, "DEBUG: ", log.Ltime|log.Lmicroseconds)
 
 // set by ldflags when you "mage build"
 var (
@@ -759,7 +764,7 @@ func filter(list []string, prefix string) []string {
 // directory.
 func removeContents(dir string) error {
 	debug.Println("removing all files in", dir)
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil

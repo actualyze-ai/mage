@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package parse
 
 import (
@@ -6,7 +12,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/magefile/mage/internal"
+	"github.com/actualyze-ai/mage/internal"
 )
 
 func init() {
@@ -104,7 +110,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestGetImportSelf(t *testing.T) {
-	imp, err := getImport("go", "github.com/magefile/mage/parse/testdata/importself", "")
+	imp, err := getImport("go", "github.com/actualyze-ai/mage/parse/testdata/importself", "")
 	if err != nil {
 		t.Fatal(err)
 	}

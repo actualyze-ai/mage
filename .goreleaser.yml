@@ -1,13 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+# Modifications Copyright (c) 2026 Actualyze AI
+#
+# NOTE: This file has been modified by Actualyze AI from the original upstream
+# version (magefile/mage). See git history for details.
+
 project_name: mage
 release:
   github:
-    owner: magefile
+    owner: actualyze-ai
     name: mage
   draft: true
 build:
   binary: mage
   main: .
-  ldflags: -s -w -X github.com/magefile/mage/mage.timestamp={{.Date}} -X github.com/magefile/mage/mage.commitHash={{.Commit}} -X github.com/magefile/mage/mage.gitTag={{.Version}}
+  ldflags: -s -w -X github.com/actualyze-ai/mage/mage.timestamp={{.Date}} -X github.com/actualyze-ai/mage/mage.commitHash={{.Commit}} -X github.com/actualyze-ai/mage/mage.gitTag={{.Version}}
   goos:
     - darwin
     - linux

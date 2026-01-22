@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mage
 
 var mageTpl = `//go:build mage
@@ -10,7 +16,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/magefile/mage/mg" // mg contains helpful utility functions, like Deps
+	"github.com/actualyze-ai/mage/mg" // mg contains helpful utility functions, like Deps
 )
 
 // Default target to run when none is specified

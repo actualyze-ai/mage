@@ -1,12 +1,18 @@
 //go:build ignore
 // +build ignore
 
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package main
 
 import (
 	"os"
 
-	"github.com/magefile/mage/mage"
+	"github.com/actualyze-ai/mage/mage"
 )
 
 // This is a bootstrap builder, to build mage when you don't already *have* mage.

@@ -1,6 +1,12 @@
 //go:build mage
 // +build mage
 
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 // This is the build script for Mage. The install target is all you really need.
 // The release target is for generating official releases and is really only
 // useful to project admins.
@@ -17,8 +23,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/magefile/mage/mg"
-	"github.com/magefile/mage/sh"
+	"github.com/actualyze-ai/mage/mg"
+	"github.com/actualyze-ai/mage/sh"
 )
 
 var Aliases = map[string]interface{}{
@@ -64,7 +70,7 @@ func Install() error {
 	// install` turns into a no-op, and `go install -a` fails on people's
 	// machines that have go installed in a non-writeable directory (such as
 	// normal OS installs in /usr/bin)
-	return sh.RunV(gocmd, "build", "-o", path, "-ldflags="+flags(), "github.com/magefile/mage")
+	return sh.RunV(gocmd, "build", "-o", path, "-ldflags="+flags(), "github.com/actualyze-ai/mage")
 }
 
 var releaseTag = regexp.MustCompile(`^v1\.[0-9]+\.[0-9]+$`)
@@ -105,7 +111,7 @@ func flags() string {
 	if tag == "" {
 		tag = "dev"
 	}
-	return fmt.Sprintf(`-X "github.com/magefile/mage/mage.timestamp=%s" -X "github.com/magefile/mage/mage.commitHash=%s" -X "github.com/magefile/mage/mage.gitTag=%s"`, timestamp, hash, tag)
+	return fmt.Sprintf(`-X "github.com/actualyze-ai/mage/mage.timestamp=%s" -X "github.com/actualyze-ai/mage/mage.commitHash=%s" -X "github.com/actualyze-ai/mage/mage.gitTag=%s"`, timestamp, hash, tag)
 }
 
 // tag returns the git tag for the current branch or "" if none.

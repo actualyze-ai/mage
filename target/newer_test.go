@@ -1,7 +1,12 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package target
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -10,14 +15,14 @@ import (
 
 func TestNewestModTime(t *testing.T) {
 	t.Parallel()
-	dir, err := ioutil.TempDir("", "")
+	dir, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("error creating temp dir: %s", err.Error())
 	}
 	defer os.RemoveAll(dir)
 	for _, name := range []string{"a", "b", "c", "d"} {
 		out := filepath.Join(dir, name)
-		if err := ioutil.WriteFile(out, []byte("hi!"), 0644); err != nil {
+		if err := os.WriteFile(out, []byte("hi!"), 0644); err != nil {
 			t.Fatalf("error writing file: %s", err.Error())
 		}
 	}
@@ -58,14 +63,14 @@ func TestNewestModTime(t *testing.T) {
 
 func TestOldestModTime(t *testing.T) {
 	t.Parallel()
-	dir, err := ioutil.TempDir("", "")
+	dir, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("error creating temp dir: %s", err.Error())
 	}
 	defer os.RemoveAll(dir)
 	for _, name := range []string{"a", "b", "c", "d"} {
 		out := filepath.Join(dir, name)
-		if err := ioutil.WriteFile(out, []byte("hi!"), 0644); err != nil {
+		if err := os.WriteFile(out, []byte("hi!"), 0644); err != nil {
 			t.Fatalf("error writing file: %s", err.Error())
 		}
 	}

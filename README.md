@@ -30,7 +30,7 @@ and Mage automatically uses them as Makefile-like runnable targets.
 
 ## Installation
 
-Mage has no dependencies outside the Go standard library and requires Go 1.21
+Mage has no dependencies outside the Go standard library and requires Go 1.25
 or above.
 
 **Using Go Install (Recommended)**

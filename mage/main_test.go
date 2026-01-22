@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mage
 
 import (
@@ -12,7 +18,6 @@ import (
 	"go/parser"
 	"go/token"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -26,8 +31,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/magefile/mage/internal"
-	"github.com/magefile/mage/mg"
+	"github.com/actualyze-ai/mage/internal"
+	"github.com/actualyze-ai/mage/mg"
 )
 
 const testExeEnv = "MAGE_TEST_STRING"
@@ -43,7 +48,7 @@ func TestMain(m *testing.M) {
 func testmain(m *testing.M) int {
 	// ensure we write our temporary binaries to a directory that we'll delete
 	// after running tests.
-	dir, err := ioutil.TempDir("", "")
+	dir, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -251,7 +256,7 @@ func TestListMagefilesIgnoresRespectsGOOSArg(t *testing.T) {
 }
 
 func TestCompileDiffGoosGoarch(t *testing.T) {
-	target, err := ioutil.TempDir("./testdata", "")
+	target, err := os.MkdirTemp("./testdata", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -552,7 +557,7 @@ func TestVerboseEnv(t *testing.T) {
 	os.Setenv("MAGEFILE_VERBOSE", "true")
 	defer os.Unsetenv("MAGEFILE_VERBOSE")
 	stdout := &bytes.Buffer{}
-	inv, _, err := Parse(ioutil.Discard, stdout, []string{})
+	inv, _, err := Parse(io.Discard, stdout, []string{})
 	if err != nil {
 		t.Fatal("unexpected error", err)
 	}
@@ -568,7 +573,7 @@ func TestVerboseFalseEnv(t *testing.T) {
 	os.Setenv("MAGEFILE_VERBOSE", "0")
 	defer os.Unsetenv("MAGEFILE_VERBOSE")
 	stdout := &bytes.Buffer{}
-	code := ParseAndRun(ioutil.Discard, stdout, nil, []string{"-d", "testdata", "testverbose"})
+	code := ParseAndRun(io.Discard, stdout, nil, []string{"-d", "testdata", "testverbose"})
 	if code != 0 {
 		t.Fatal("unexpected code", code)
 	}
@@ -583,7 +588,7 @@ func TestList(t *testing.T) {
 	inv := Invocation{
 		Dir:    "./testdata/list",
 		Stdout: stdout,
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		List:   true,
 	}
 
@@ -658,7 +663,7 @@ Targets:
 			inv := Invocation{
 				Dir:    "./testdata/list",
 				Stdout: stdout,
-				Stderr: ioutil.Discard,
+				Stderr: io.Discard,
 				List:   true,
 			}
 
@@ -750,7 +755,7 @@ func TestTargetError(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	inv := Invocation{
 		Dir:    "./testdata",
-		Stdout: ioutil.Discard,
+		Stdout: io.Discard,
 		Stderr: stderr,
 		Args:   []string{"returnsnonnilerror"},
 	}
@@ -770,7 +775,7 @@ func TestStdinCopy(t *testing.T) {
 	stdin := strings.NewReader("hi!")
 	inv := Invocation{
 		Dir:    "./testdata",
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Stdout: stdout,
 		Stdin:  stdin,
 		Args:   []string{"CopyStdin"},
@@ -790,7 +795,7 @@ func TestTargetPanics(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	inv := Invocation{
 		Dir:    "./testdata",
-		Stdout: ioutil.Discard,
+		Stdout: io.Discard,
 		Stderr: stderr,
 		Args:   []string{"panics"},
 	}
@@ -809,7 +814,7 @@ func TestPanicsErr(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	inv := Invocation{
 		Dir:    "./testdata",
-		Stdout: ioutil.Discard,
+		Stdout: io.Discard,
 		Stderr: stderr,
 		Args:   []string{"panicserr"},
 	}
@@ -1002,7 +1007,7 @@ func TestBadSecondTargets(t *testing.T) {
 
 func TestParse(t *testing.T) {
 	buf := &bytes.Buffer{}
-	inv, cmd, err := Parse(ioutil.Discard, buf, []string{"-v", "-debug", "-gocmd=foo", "-d", "dir", "build", "deploy"})
+	inv, cmd, err := Parse(io.Discard, buf, []string{"-v", "-debug", "-gocmd=foo", "-d", "dir", "build", "deploy"})
 	if err != nil {
 		t.Fatal("unexpected error", err)
 	}
@@ -1097,12 +1102,12 @@ func TestTimeout(t *testing.T) {
 
 func TestParseHelp(t *testing.T) {
 	buf := &bytes.Buffer{}
-	_, _, err := Parse(ioutil.Discard, buf, []string{"-h"})
+	_, _, err := Parse(io.Discard, buf, []string{"-h"})
 	if err != flag.ErrHelp {
 		t.Fatal("unexpected error", err)
 	}
 	buf2 := &bytes.Buffer{}
-	_, _, err = Parse(ioutil.Discard, buf2, []string{"--help"})
+	_, _, err = Parse(io.Discard, buf2, []string{"--help"})
 	if err != flag.ErrHelp {
 		t.Fatal("unexpected error", err)
 	}
@@ -1118,7 +1123,7 @@ func TestHelpTarget(t *testing.T) {
 	inv := Invocation{
 		Dir:    "./testdata",
 		Stdout: stdout,
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Args:   []string{"panics"},
 		Help:   true,
 	}
@@ -1138,7 +1143,7 @@ func TestHelpAlias(t *testing.T) {
 	inv := Invocation{
 		Dir:    "./testdata/alias",
 		Stdout: stdout,
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Args:   []string{"status"},
 		Help:   true,
 	}
@@ -1154,7 +1159,7 @@ func TestHelpAlias(t *testing.T) {
 	inv = Invocation{
 		Dir:    "./testdata/alias",
 		Stdout: stdout,
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Args:   []string{"checkout"},
 		Help:   true,
 	}
@@ -1177,7 +1182,7 @@ func TestAlias(t *testing.T) {
 	inv := Invocation{
 		Dir:    "testdata/alias",
 		Stdout: stdout,
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Args:   []string{"status"},
 		Debug:  true,
 	}
@@ -1204,10 +1209,10 @@ func TestAlias(t *testing.T) {
 
 func TestInvalidAlias(t *testing.T) {
 	stderr := &bytes.Buffer{}
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 	inv := Invocation{
 		Dir:    "./testdata/invalid_alias",
-		Stdout: ioutil.Discard,
+		Stdout: io.Discard,
 		Stderr: stderr,
 		Args:   []string{"co"},
 	}
@@ -1239,7 +1244,7 @@ func TestCompiledFlags(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	stdout := &bytes.Buffer{}
 	dir := "./testdata/compiled"
-	compileDir, err := ioutil.TempDir(dir, "")
+	compileDir, err := os.MkdirTemp(dir, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1326,7 +1331,7 @@ func TestCompiledEnvironmentVars(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	stdout := &bytes.Buffer{}
 	dir := "./testdata/compiled"
-	compileDir, err := ioutil.TempDir(dir, "")
+	compileDir, err := os.MkdirTemp(dir, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1418,7 +1423,7 @@ func TestCompiledVerboseFlag(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	stdout := &bytes.Buffer{}
 	dir := "./testdata/compiled"
-	compileDir, err := ioutil.TempDir(dir, "")
+	compileDir, err := os.MkdirTemp(dir, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1484,7 +1489,7 @@ func TestSignals(t *testing.T) {
 	stderr := &bytes.Buffer{}
 	stdout := &bytes.Buffer{}
 	dir := "./testdata/signals"
-	compileDir, err := ioutil.TempDir(dir, "")
+	compileDir, err := os.MkdirTemp(dir, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1587,7 +1592,7 @@ func TestSignals(t *testing.T) {
 
 func TestCompiledDeterministic(t *testing.T) {
 	dir := "./testdata/compiled"
-	compileDir, err := ioutil.TempDir(dir, "")
+	compileDir, err := os.MkdirTemp(dir, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1653,13 +1658,13 @@ func TestClean(t *testing.T) {
 	if err := os.RemoveAll(mg.CacheDir()); err != nil {
 		t.Error("error removing cache dir:", err)
 	}
-	code := ParseAndRun(ioutil.Discard, ioutil.Discard, &bytes.Buffer{}, []string{"-clean"})
+	code := ParseAndRun(io.Discard, io.Discard, &bytes.Buffer{}, []string{"-clean"})
 	if code != 0 {
 		t.Errorf("expected 0, but got %v", code)
 	}
 
 	TestAlias(t) // make sure we've got something in the CACHE_DIR
-	files, err := ioutil.ReadDir(mg.CacheDir())
+	files, err := os.ReadDir(mg.CacheDir())
 	if err != nil {
 		t.Error("issue reading file:", err)
 	}
@@ -1668,7 +1673,7 @@ func TestClean(t *testing.T) {
 		t.Error("Need at least 1 cached binaries to test --clean")
 	}
 
-	_, cmd, err := Parse(ioutil.Discard, ioutil.Discard, []string{"-clean"})
+	_, cmd, err := Parse(io.Discard, io.Discard, []string{"-clean"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1676,12 +1681,12 @@ func TestClean(t *testing.T) {
 		t.Errorf("Expected 'clean' command but got %v", cmd)
 	}
 	buf := &bytes.Buffer{}
-	code = ParseAndRun(ioutil.Discard, buf, &bytes.Buffer{}, []string{"-clean"})
+	code = ParseAndRun(io.Discard, buf, &bytes.Buffer{}, []string{"-clean"})
 	if code != 0 {
 		t.Fatalf("expected 0, but got %v: %s", code, buf)
 	}
 
-	infos, err := ioutil.ReadDir(mg.CacheDir())
+	infos, err := os.ReadDir(mg.CacheDir())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1706,7 +1711,7 @@ func TestGoCmd(t *testing.T) {
 	}
 
 	// fake out the compiled file, since the code checks for it.
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1734,13 +1739,13 @@ func TestGoModules(t *testing.T) {
 	if len(matches) < 2 || minorVer(t, matches[1]) < 11 {
 		t.Skipf("Skipping Go modules test because go version %q is less than go1.11", runtime.Version())
 	}
-	dir, err := ioutil.TempDir("", "")
+	dir, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(dir)
 	// beware, mage builds in go versions older than 1.17 so both build tag formats need to be present
-	err = ioutil.WriteFile(filepath.Join(dir, "magefile.go"), []byte(`//go:build mage
+	err = os.WriteFile(filepath.Join(dir, "magefile.go"), []byte(`//go:build mage
 // +build mage
 
 package main
@@ -1825,7 +1830,7 @@ func TestNamespace(t *testing.T) {
 	stdout := &bytes.Buffer{}
 	inv := Invocation{
 		Dir:    "./testdata/namespaces",
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Stdout: stdout,
 		Args:   []string{"ns:error"},
 	}
@@ -1843,7 +1848,7 @@ func TestNamespaceDefault(t *testing.T) {
 	stdout := &bytes.Buffer{}
 	inv := Invocation{
 		Dir:    "./testdata/namespaces",
-		Stderr: ioutil.Discard,
+		Stderr: io.Discard,
 		Stdout: stdout,
 	}
 	code := Invoke(inv)
@@ -1864,7 +1869,7 @@ func TestWrongDependency(t *testing.T) {
 	inv := Invocation{
 		Dir:    "./testdata/wrong_dep",
 		Stderr: stderr,
-		Stdout: ioutil.Discard,
+		Stdout: io.Discard,
 	}
 	code := Invoke(inv)
 	if code != 1 {

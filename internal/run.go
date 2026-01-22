@@ -1,9 +1,15 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package internal
 
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -11,7 +17,7 @@ import (
 	"strings"
 )
 
-var debug *log.Logger = log.New(ioutil.Discard, "", 0)
+var debug *log.Logger = log.New(io.Discard, "", 0)
 
 func SetDebug(l *log.Logger) {
 	debug = l

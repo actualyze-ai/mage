@@ -1,11 +1,17 @@
 //go:build mage
 // +build mage
 
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package sametarget
 
 import (
 	// mage:import samenamespace
-	_ "github.com/magefile/mage/mage/testdata/mageimport/samenamespace/duptargets/package1"
+	_ "github.com/actualyze-ai/mage/mage/testdata/mageimport/samenamespace/duptargets/package1"
 	// mage:import samenamespace
-	_ "github.com/magefile/mage/mage/testdata/mageimport/samenamespace/duptargets/package2"
+	_ "github.com/actualyze-ai/mage/mage/testdata/mageimport/samenamespace/duptargets/package2"
 )

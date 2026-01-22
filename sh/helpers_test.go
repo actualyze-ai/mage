@@ -1,14 +1,19 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package sh_test
 
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/magefile/mage/sh"
+	"github.com/actualyze-ai/mage/sh"
 )
 
 // compareFiles checks that two files are identical for testing purposes. That means they have the same length,
@@ -29,11 +34,11 @@ func compareFiles(file1 string, file2 string) error {
 	if s1.Mode() != s2.Mode() {
 		return fmt.Errorf("files %s and %s have different permissions: %#4o vs %#4o", file1, file2, s1.Mode(), s2.Mode())
 	}
-	f1bytes, err := ioutil.ReadFile(file1)
+	f1bytes, err := os.ReadFile(file1)
 	if err != nil {
 		return fmt.Errorf("can't read %s: %v", file1, err)
 	}
-	f2bytes, err := ioutil.ReadFile(file2)
+	f2bytes, err := os.ReadFile(file2)
 	if err != nil {
 		return fmt.Errorf("can't read %s: %v", file2, err)
 	}
@@ -45,7 +50,7 @@ func compareFiles(file1 string, file2 string) error {
 
 func TestHelpers(t *testing.T) {
 
-	mytmpdir, err := ioutil.TempDir("", "mage")
+	mytmpdir, err := os.MkdirTemp("", "mage")
 	if err != nil {
 		t.Fatalf("can't create test directory: %v", err)
 	}
@@ -56,7 +61,7 @@ func TestHelpers(t *testing.T) {
 		}
 	}()
 	srcname := filepath.Join(mytmpdir, "test1.txt")
-	err = ioutil.WriteFile(srcname, []byte("All work and no play makes Jack a dull boy."), 0644)
+	err = os.WriteFile(srcname, []byte("All work and no play makes Jack a dull boy."), 0644)
 	if err != nil {
 		t.Fatalf("can't create test file %s: %v", srcname, err)
 	}

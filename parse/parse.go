@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package parse
 
 import (
@@ -7,19 +13,19 @@ import (
 	"go/doc"
 	"go/parser"
 	"go/token"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/magefile/mage/internal"
+	"github.com/actualyze-ai/mage/internal"
 )
 
 const importTag = "mage:import"
 
-var debug = log.New(ioutil.Discard, "DEBUG: ", log.Ltime|log.Lmicroseconds)
+var debug = log.New(io.Discard, "DEBUG: ", log.Ltime|log.Lmicroseconds)
 
 // EnableDebug turns on debug logging.
 func EnableDebug() {

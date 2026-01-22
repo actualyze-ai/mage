@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mage
 
 import (
@@ -324,7 +330,7 @@ func TestMageImportsTaggedPackage(t *testing.T) {
 	actual := stderr.String()
 	// Match a shorter version of the error message, since the output from go list differs between versions
 	expected := `
-Error parsing magefiles: error running "go list -f {{.Dir}}||{{.Name}} github.com/magefile/mage/mage/testdata/mageimport/tagged/pkg": exit status 1`[1:]
+Error parsing magefiles: error running "go list -f {{.Dir}}||{{.Name}} github.com/actualyze-ai/mage/mage/testdata/mageimport/tagged/pkg": exit status 1`[1:]
 	actualShortened := actual[:len(expected)]
 	if actualShortened != expected {
 		t.Logf("expected: %q", expected)
@@ -377,7 +383,7 @@ func TestMageImportsSameNamespaceDupTargets(t *testing.T) {
 	}
 	actual := stderr.String()
 	expected := `
-Error parsing magefiles: "samenamespace:build" target has multiple definitions: github.com/magefile/mage/mage/testdata/mageimport/samenamespace/duptargets/package1.Build, github.com/magefile/mage/mage/testdata/mageimport/samenamespace/duptargets/package2.Build
+Error parsing magefiles: "samenamespace:build" target has multiple definitions: github.com/actualyze-ai/mage/mage/testdata/mageimport/samenamespace/duptargets/package1.Build, github.com/actualyze-ai/mage/mage/testdata/mageimport/samenamespace/duptargets/package2.Build
 
 `[1:]
 	if actual != expected {

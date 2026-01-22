@@ -1,6 +1,12 @@
 //go:build mage
 // +build mage
 
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package main
 
 // important things to note:
@@ -14,9 +20,9 @@ import (
 	"fmt"
 
 	//mage:import
-	_ "github.com/magefile/mage/mage/testdata/mageimport/subdir1"
+	_ "github.com/actualyze-ai/mage/mage/testdata/mageimport/subdir1"
 	//mage:import zz
-	"github.com/magefile/mage/mage/testdata/mageimport/subdir2"
+	"github.com/actualyze-ai/mage/mage/testdata/mageimport/subdir2"
 )
 
 var Aliases = map[string]interface{}{

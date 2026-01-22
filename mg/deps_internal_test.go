@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mg
 
 import (
@@ -20,7 +26,7 @@ func TestDepsLogging(t *testing.T) {
 
 	foo()
 
-	if strings.Count(buf.String(), "Running dependency: github.com/magefile/mage/mg.baz") != 1 {
+	if strings.Count(buf.String(), "Running dependency: github.com/actualyze-ai/mage/mg.baz") != 1 {
 		t.Fatalf("expected one baz to be logged, but got\n%s", buf)
 	}
 }

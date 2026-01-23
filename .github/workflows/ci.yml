@@ -94,3 +94,19 @@ jobs:
 
       - name: Run fuzz tests (sh)
         run: go test -fuzz=FuzzEnvExpand -fuzztime=30s ./sh/
+
+  all-jobs:
+    name: CI / All Jobs
+    runs-on: ubuntu-latest
+    needs: [lint, test, fuzz]
+    if: always()
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]] || \
+             [[ "${{ needs.test.result }}" != "success" ]] || \
+             [[ "${{ needs.fuzz.result }}" != "success" ]]; then
+            echo "One or more jobs failed"
+            exit 1
+          fi
+          echo "All jobs passed"

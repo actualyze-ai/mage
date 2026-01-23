@@ -21,6 +21,7 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  merge_group:
   schedule:
     # Weekly on Mondays at 6am UTC
     - cron: '0 6 * * 1'

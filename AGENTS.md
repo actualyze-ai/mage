@@ -319,9 +319,11 @@ func(ctx context.Context, name string, count int) error
 
 ## CI/CD Configuration
 
+> **Note:** For comprehensive guidance on GitHub Actions workflows, rulesets, code scanning, and troubleshooting, see [`GITHUB_WORKFLOWS.md`](GITHUB_WORKFLOWS.md).
+
 ### CI Workflow (`.github/workflows/ci.yml`)
 
-Runs on every push and pull request:
+Runs on every pull request and merge queue:
 
 **Lint Job:**
 - golangci-lint v2 with comprehensive rule set
@@ -436,6 +438,7 @@ The `.golangci.yml` uses golangci-lint v2 format with `default: all` and specifi
 
 | Resource | URL |
 |----------|-----|
+| GitHub Workflows Guide | [`GITHUB_WORKFLOWS.md`](GITHUB_WORKFLOWS.md) |
 | Issues | https://github.com/actualyze-ai/mage/issues |
 | This Repository | https://github.com/actualyze-ai/mage |
 | Upstream Mage | https://github.com/magefile/mage |

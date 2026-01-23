@@ -24,6 +24,7 @@ on:
   schedule:
     # Weekly on Mondays at 6am UTC
     - cron: '0 6 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read

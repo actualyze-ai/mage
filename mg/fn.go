@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mg
 
 import (
@@ -145,7 +151,6 @@ func checkF(target interface{}, args []interface{}) (hasContext, isNamespace boo
 	if t.IsVariadic() {
 		if len(args) < inputs-1 {
 			return false, false, fmt.Errorf("too few arguments for target, got %d for %T", len(args), target)
-
 		}
 	} else if len(args) != inputs {
 		return false, false, fmt.Errorf("wrong number of arguments for target, got %d for %T", len(args), target)

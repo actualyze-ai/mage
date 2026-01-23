@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package mg
 
 import (
@@ -6,8 +12,9 @@ import (
 )
 
 type fatalErr struct {
-	code int
 	error
+
+	code int
 }
 
 func (f fatalErr) ExitStatus() int {

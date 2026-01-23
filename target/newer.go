@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package target
 
 import (
@@ -7,11 +13,9 @@ import (
 	"time"
 )
 
-var (
-	// errNewer is an ugly sentinel error to cause filepath.Walk to abort
-	// as soon as a newer file is encountered
-	errNewer = fmt.Errorf("newer item encountered")
-)
+// errNewer is an ugly sentinel error to cause filepath.Walk to abort
+// as soon as a newer file is encountered
+var errNewer = fmt.Errorf("newer item encountered")
 
 // DirNewer reports whether any item in sources is newer than the target time.
 // Sources are searched recursively and searching stops as soon as any entry
@@ -80,7 +84,7 @@ func PathNewer(target time.Time, sources ...string) (bool, error) {
 	return false, nil
 }
 
-// OldestModTime recurses a list of target filesystem objects and finds the
+// OldestModTime recurses a list of target filesystem objects and finds
 // the oldest ModTime among them.
 func OldestModTime(targets ...string) (time.Time, error) {
 	t := time.Now().Add(time.Hour * 100000)
@@ -102,7 +106,7 @@ func OldestModTime(targets ...string) (time.Time, error) {
 	return t, nil
 }
 
-// NewestModTime recurses a list of target filesystem objects and finds the
+// NewestModTime recurses a list of target filesystem objects and finds
 // the newest ModTime among them.
 func NewestModTime(targets ...string) (time.Time, error) {
 	t := time.Time{}

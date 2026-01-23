@@ -19,7 +19,7 @@ import (
 // compareFiles checks that two files are identical for testing purposes. That means they have the same length,
 // the same contents, and the same permissions. It does NOT mean they have the same timestamp, as that is expected
 // to change in normal Mage sh.Copy operation.
-func compareFiles(file1 string, file2 string) error {
+func compareFiles(file1, file2 string) error {
 	s1, err := os.Stat(file1)
 	if err != nil {
 		return fmt.Errorf("can't stat %s: %v", file1, err)
@@ -49,7 +49,6 @@ func compareFiles(file1 string, file2 string) error {
 }
 
 func TestHelpers(t *testing.T) {
-
 	mytmpdir, err := os.MkdirTemp("", "mage")
 	if err != nil {
 		t.Fatalf("can't create test directory: %v", err)
@@ -61,7 +60,7 @@ func TestHelpers(t *testing.T) {
 		}
 	}()
 	srcname := filepath.Join(mytmpdir, "test1.txt")
-	err = os.WriteFile(srcname, []byte("All work and no play makes Jack a dull boy."), 0644)
+	err = os.WriteFile(srcname, []byte("All work and no play makes Jack a dull boy."), 0o644)
 	if err != nil {
 		t.Fatalf("can't create test file %s: %v", srcname, err)
 	}
@@ -122,5 +121,4 @@ func TestHelpers(t *testing.T) {
 			t.Errorf("sh.Rm complained removing nonexistent dir %s", mytmpdir)
 		}
 	})
-
 }

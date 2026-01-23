@@ -8,7 +8,7 @@ package mage
 
 import (
 	"bytes"
-	"crypto/sha1"
+	"crypto/sha256"
 	"errors"
 	"flag"
 	"fmt"
@@ -178,7 +178,7 @@ func ParseAndRun(stdout, stderr io.Writer, stdin io.Reader, args []string) int {
 	case None:
 		return Invoke(inv)
 	default:
-		panic(fmt.Errorf("Unknown command type: %v", cmd))
+		panic(fmt.Errorf("unknown command type: %v", cmd))
 	}
 }
 
@@ -661,13 +661,13 @@ func ExeName(goCmd, cacheDir string, files []string) (string, error) {
 	}
 	// hash the mainfile template to ensure if it gets updated, we make a new
 	// binary.
-	hashes = append(hashes, fmt.Sprintf("%x", sha1.Sum([]byte(mageMainfileTplString))))
+	hashes = append(hashes, fmt.Sprintf("%x", sha256.Sum256([]byte(mageMainfileTplString))))
 	sort.Strings(hashes)
 	ver, err := internal.OutputDebug(goCmd, "version")
 	if err != nil {
 		return "", err
 	}
-	hash := sha1.Sum([]byte(strings.Join(hashes, "") + magicRebuildKey + ver))
+	hash := sha256.Sum256([]byte(strings.Join(hashes, "") + magicRebuildKey + ver))
 	filename := fmt.Sprintf("%x", hash)
 
 	out := filepath.Join(cacheDir, filename)
@@ -684,7 +684,7 @@ func hashFile(fn string) (string, error) {
 	}
 	defer f.Close()
 
-	h := sha1.New()
+	h := sha256.New()
 	if _, err := io.Copy(h, f); err != nil {
 		return "", fmt.Errorf("can't write data to hash: %v", err)
 	}

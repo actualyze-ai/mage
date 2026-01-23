@@ -291,6 +291,7 @@ func TestMageImportsOneLine(t *testing.T) {
 		t.Fatalf("expected: %q got: %q", expected, actual)
 	}
 }
+
 func TestMageImportsTrailing(t *testing.T) {
 	stdout := &bytes.Buffer{}
 	stderr := &bytes.Buffer{}

@@ -63,7 +63,7 @@ func RunV(cmd string, args ...string) error {
 }
 
 // RunWith runs the given command, directing stderr to this program's stderr and
-// printing stdout to stdout if mage was run with -v.  It adds adds env to the
+// printing stdout to stdout if mage was run with -v.  It adds env to the
 // environment variables for the command being run. Environment variables should
 // be in the format name=value.
 func RunWith(env map[string]string, cmd string, args ...string) error {

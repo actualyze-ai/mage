@@ -50,7 +50,10 @@ Examples:
 ### 3. Issue Tracking
 Issues are tracked in **this repository**:
 - **Issues:** https://github.com/actualyze-ai/mage/issues
+- **Project Board:** https://github.com/orgs/actualyze-ai/projects/8
 - Reference issues as: `#<number>`
+
+When creating a new issue, add it to the [Actualyze AI project board](https://github.com/orgs/actualyze-ai/projects/8).
 
 ### 4. Keep Documentation Updated
 After making changes, update:

@@ -1354,7 +1354,7 @@ func TestCompiledEnvironmentVars(t *testing.T) {
 		t.Errorf("expected to exit with code 0, but got %v, stderr: %s", code, stderr)
 	}
 
-	run := func(stdout, stderr *bytes.Buffer, filename string, envval string, args ...string) error {
+	run := func(stdout, stderr *bytes.Buffer, filename, envval string, args ...string) error {
 		stderr.Reset()
 		stdout.Reset()
 		cmd := exec.Command(filename, args...)
@@ -1509,7 +1509,7 @@ func TestSignals(t *testing.T) {
 		t.Errorf("expected to exit with code 0, but got %v, stderr: %s", code, stderr)
 	}
 
-	run := func(stdout, stderr *bytes.Buffer, filename string, target string, signals ...syscall.Signal) error {
+	run := func(stdout, stderr *bytes.Buffer, filename, target string, signals ...syscall.Signal) error {
 		stderr.Reset()
 		stdout.Reset()
 		cmd := exec.Command(filename, target)
@@ -1753,7 +1753,7 @@ package main
 func Test() {
 	print("nothing is imported here for >1.17 compatibility")
 }
-`), 0600)
+`), 0o600)
 	if err != nil {
 		t.Fatal(err)
 	}

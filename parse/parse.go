@@ -220,7 +220,7 @@ func checkDupes(info *PkgInfo, imports []*Import) error {
 			for _, f := range funcs[alias] {
 				ids = append(ids, f.ID())
 			}
-			return fmt.Errorf("alias %q duplicates existing target(s): %s\n", alias, strings.Join(ids, ", "))
+			return fmt.Errorf("alias %q duplicates existing target(s): %s", alias, strings.Join(ids, ", "))
 		}
 		funcs[alias] = append(funcs[alias], f)
 	}
@@ -853,7 +853,7 @@ func funcType(ft *ast.FuncType) (*Function, error) {
 }
 
 func toOneLine(s string) string {
-	return strings.TrimSpace(strings.Replace(s, "\n", " ", -1))
+	return strings.TrimSpace(strings.ReplaceAll(s, "\n", " "))
 }
 
 var argTypes = map[string]string{

@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package sh
 
 import (
@@ -68,5 +74,4 @@ func TestAutoExpand(t *testing.T) {
 	if s != "baz" {
 		t.Fatalf(`Expected "baz" but got %q`, s)
 	}
-
 }

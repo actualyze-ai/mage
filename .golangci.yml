@@ -1,0 +1,201 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright (c) 2026 Actualyze AI
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: "2"
+
+run:
+  timeout: 5m
+
+output:
+  sort-order:
+    - file
+
+linters:
+  # Start with all linters enabled, explicitly disable those that don't apply
+  default: all
+  disable:
+    # Disabled with documented reasons - Code quality tradeoffs
+    - cyclop          # Complexity thresholds are arbitrary
+    - depguard        # No dependency restrictions needed (stdlib only)
+    - dupl            # Duplicate code detection has many false positives
+    - err113          # Requires sentinel errors - significant refactor not justified
+    - exhaustruct     # Too strict - not all struct fields need explicit init
+    - forbidigo       # fmt.Print is acceptable for a CLI build tool
+    - funlen          # Function length limits are arbitrary
+    - gochecknoglobals # Some globals are acceptable (version info, etc.)
+    - gochecknoinits  # init() functions are sometimes appropriate
+    - gocognit        # Complexity thresholds are arbitrary, overlaps with cyclop
+    - gocyclo         # Complexity thresholds are arbitrary
+    - ireturn         # Returning interfaces is valid Go
+    - lll             # Line length limits handled by gofumpt
+    - mnd             # Magic number detection too strict (e.g., 2 for splitting)
+    - nestif          # Nested if complexity is subjective
+    - nlreturn        # Blank line before return is stylistic preference
+    - nonamedreturns  # Named returns are idiomatic in some cases
+    - paralleltest    # Not all tests benefit from t.Parallel()
+    - testpackage     # Internal test packages (_test.go in same package) are valid
+    - varnamelen      # Short variable names are idiomatic Go
+    - wrapcheck       # Error wrapping not always necessary for internal code
+    - wsl             # Whitespace linter is too opinionated
+
+    # Disabled with documented reasons - Stylistic preferences
+    - godot           # Comment periods are stylistic
+    - godox           # TODO/FIXME comments are acceptable during development
+    - goconst         # String constant suggestions often not applicable
+    - perfsprint      # Performance micro-optimizations not critical
+    - prealloc        # Slice preallocation suggestions often not applicable
+    - tparallel       # Not all tests need t.Parallel
+    - wsl_v5          # Whitespace linter v5 is too opinionated
+    - noctx           # exec.Command without context is acceptable for build tool
+    - noinlineerr     # Inline error handling is idiomatic Go
+    - modernize       # +build tags still needed for older Go versions compatibility
+
+  settings:
+    govet:
+      enable:
+        - nilness
+        - reflectvaluecompare
+        - sortslice
+        - unusedwrite
+
+    gosec:
+      excludes:
+        - G104  # Errors unhandled - acceptable for debug/cleanup operations
+        - G204  # Subprocess with variable - acceptable for build tool
+        - G304  # File path provided as taint input - acceptable for build tool
+
+    revive:
+      rules:
+        - name: exported
+          disabled: true  # Package comments not required for this codebase
+
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+
+  exclusions:
+    presets:
+      - std-error-handling
+      - common-false-positives
+
+    rules:
+      # Test files can have more relaxed rules
+      - path: _test\.go
+        linters:
+          - errcheck
+          - forcetypeassert
+          - gosec
+          - gocritic
+          - errorlint
+          - usetesting
+          - fatcontext
+          - thelper
+          - copyloopvar
+          - unconvert
+          - ineffassign
+
+      # Existing codebase uses %v for error formatting
+      - text: "non-wrapping format verb for fmt.Errorf"
+        linters:
+          - errorlint
+
+      # Existing codebase uses == for error comparison
+      - text: "comparing with .* will fail on wrapped errors"
+        linters:
+          - errorlint
+
+      # Existing codebase uses type assertions on errors
+      - text: "type assertion on error will fail on wrapped errors"
+        linters:
+          - errorlint
+
+      # Duplicate words in function signature documentation are intentional
+      - text: "Duplicate words \\(func\\(\\)\\)"
+        linters:
+          - dupword
+
+      - text: "Duplicate words \\(func\\(context.Context\\)\\)"
+        linters:
+          - dupword
+
+      - text: "Duplicate words \\(type\\)"
+        linters:
+          - dupword
+
+      # Existing codebase uses deprecated APIs that would require significant refactor
+      - text: "SA1019"
+        linters:
+          - staticcheck
+
+      # Existing code patterns that would require significant refactor
+      - linters:
+          - unparam
+        text: "goCmd.*is unused"
+
+      - linters:
+          - errname
+        text: "fatalErr"
+
+      - linters:
+          - predeclared
+        text: "param new has same name"
+
+      - linters:
+          - gocritic
+        text: "ifElseChain"
+
+      - linters:
+          - gocritic
+        text: "appendAssign"
+
+      - linters:
+          - unused
+        text: "hasVoidReturn"
+
+      # intrange suggestions are optional Go 1.22+ style improvements
+      - text: "for loop can be changed to use an integer range"
+        linters:
+          - intrange
+
+      # forcetypeassert in parse package - existing code pattern
+      - path: parse/parse\.go
+        linters:
+          - forcetypeassert
+
+      - path: mg/fn\.go
+        linters:
+          - forcetypeassert
+
+      # Deferred Close() and cleanup operations - errors non-critical
+      - text: "Error return value of .*(Close|RemoveAll|RunDebug).* is not checked"
+        linters:
+          - errcheck
+
+      # fmt.Fprint to stdout - error non-critical
+      - text: "Error return value of `fmt.Fprint` is not checked"
+        linters:
+          - errcheck
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gofumpt
+  settings:
+    gofumpt:
+      extra-rules: true

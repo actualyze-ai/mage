@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
+// Modifications Copyright (c) 2026 Actualyze AI
+//
+// NOTE: This file has been modified by Actualyze AI from the original upstream
+// version (magefile/mage). See git history for details.
+
 package sh
 
 import (
@@ -17,7 +23,7 @@ func Rm(path string) error {
 }
 
 // Copy robustly copies the source file to the destination, overwriting the destination if necessary.
-func Copy(dst string, src string) error {
+func Copy(dst, src string) error {
 	from, err := os.Open(src)
 	if err != nil {
 		return fmt.Errorf(`can't copy %s: %v`, src, err)

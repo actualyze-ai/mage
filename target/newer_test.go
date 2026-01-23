@@ -22,13 +22,13 @@ func TestNewestModTime(t *testing.T) {
 	defer os.RemoveAll(dir)
 	for _, name := range []string{"a", "b", "c", "d"} {
 		out := filepath.Join(dir, name)
-		if err := os.WriteFile(out, []byte("hi!"), 0644); err != nil {
+		if err := os.WriteFile(out, []byte("hi!"), 0o644); err != nil {
 			t.Fatalf("error writing file: %s", err.Error())
 		}
 	}
 	time.Sleep(10 * time.Millisecond)
 	outName := filepath.Join(dir, "c")
-	outfh, err := os.OpenFile(outName, os.O_APPEND|os.O_WRONLY, 0644)
+	outfh, err := os.OpenFile(outName, os.O_APPEND|os.O_WRONLY, 0o644)
 	if err != nil {
 		t.Fatalf("error opening file to append: %s", err.Error())
 	}
@@ -70,14 +70,14 @@ func TestOldestModTime(t *testing.T) {
 	defer os.RemoveAll(dir)
 	for _, name := range []string{"a", "b", "c", "d"} {
 		out := filepath.Join(dir, name)
-		if err := os.WriteFile(out, []byte("hi!"), 0644); err != nil {
+		if err := os.WriteFile(out, []byte("hi!"), 0o644); err != nil {
 			t.Fatalf("error writing file: %s", err.Error())
 		}
 	}
 	time.Sleep(10 * time.Millisecond)
 	for _, name := range []string{"a", "b", "d"} {
 		outName := filepath.Join(dir, name)
-		outfh, err := os.OpenFile(outName, os.O_APPEND|os.O_WRONLY, 0644)
+		outfh, err := os.OpenFile(outName, os.O_APPEND|os.O_WRONLY, 0o644)
 		if err != nil {
 			t.Fatalf("error opening file to append: %s", err.Error())
 		}

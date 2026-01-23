@@ -12,7 +12,22 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'go.mod'
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: latest
+
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -21,14 +36,33 @@ jobs:
           - version: 'stable'
           - version-file: 'go.mod'
     steps:
-    - uses: actions/checkout@v6
-    - name: Set up Go
-      uses: actions/setup-go@v6
-      with:
-        go-version: ${{ matrix.go-setup.version || '' }}
-        go-version-file: ${{ matrix.go-setup.version-file || '' }}
+      - uses: actions/checkout@v6
 
-    - name: Test
-      run: |
-        go vet ./...
-        go test -tags CI -race ./...
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go-setup.version || '' }}
+          go-version-file: ${{ matrix.go-setup.version-file || '' }}
+
+      - name: Run tests with coverage
+        run: |
+          go test -tags CI -race -coverprofile=coverage.out -covermode=atomic ./...
+          go tool cover -func=coverage.out | tail -1
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | sed 's/%//')
+          echo "Total coverage: ${COVERAGE}%"
+          THRESHOLD=65
+          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+            echo "::error::Coverage ${COVERAGE}% is below threshold ${THRESHOLD}%"
+            exit 1
+          fi
+          echo "Coverage ${COVERAGE}% meets threshold ${THRESHOLD}%"
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-${{ matrix.go-setup.version || 'go-mod' }}
+          path: coverage.out
+          retention-days: 30

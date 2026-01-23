@@ -66,3 +66,22 @@ jobs:
           name: coverage-${{ matrix.go-setup.version || 'go-mod' }}
           path: coverage.out
           retention-days: 30
+
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Run fuzz tests (parse)
+        run: go test -fuzz=FuzzParseGoSource -fuzztime=30s ./parse/
+
+      - name: Run fuzz tests (mage)
+        run: go test -fuzz=FuzzParse -fuzztime=30s ./mage/
+
+      - name: Run fuzz tests (sh)
+        run: go test -fuzz=FuzzEnvExpand -fuzztime=30s ./sh/

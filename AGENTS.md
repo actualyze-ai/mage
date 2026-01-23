@@ -48,9 +48,9 @@ Examples:
 - `chore/update-dependencies`
 
 ### 3. Issue Tracking
-Issues are tracked in the **engineering repository**, not this repository:
-- **Issues:** https://github.com/actualyze-ai/engineering
-- Reference issues as: `actualyze-ai/engineering#<number>`
+Issues are tracked in **this repository**:
+- **Issues:** https://github.com/actualyze-ai/mage/issues
+- Reference issues as: `#<number>`
 
 ### 4. Keep Documentation Updated
 After making changes, update:
@@ -433,7 +433,7 @@ The `.golangci.yml` uses golangci-lint v2 format with `default: all` and specifi
 
 | Resource | URL |
 |----------|-----|
-| Engineering Issues | https://github.com/actualyze-ai/engineering |
+| Issues | https://github.com/actualyze-ai/mage/issues |
 | This Repository | https://github.com/actualyze-ai/mage |
 | Upstream Mage | https://github.com/magefile/mage |
 | Mage Documentation | https://magefile.org |

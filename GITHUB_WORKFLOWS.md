@@ -327,6 +327,10 @@ In your repository's ruleset configuration:
 
 ## Part 4: Workflow Templates
 
+> **Note:** The templates below use `main` as the default branch name. If your
+> repository uses a different default branch (e.g., `master`), replace `main`
+> with your branch name in the `branches:` arrays.
+
 ### 4.1 CI Workflow Template
 
 ```yaml
@@ -385,9 +389,9 @@ jobs:
 
       - name: Check coverage threshold
         run: |
-          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | sed 's/%//')
+          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{gsub(/%/, ""); print int($3)}')
           THRESHOLD=65
-          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+          if [ "$COVERAGE" -lt "$THRESHOLD" ]; then
             echo "::error::Coverage ${COVERAGE}% is below threshold ${THRESHOLD}%"
             exit 1
           fi
@@ -754,6 +758,11 @@ on:
 ---
 
 ## Appendix: gh api Commands
+
+> **Note:** In the commands below, replace these placeholders with actual values:
+> - `{owner}` - Repository owner (e.g., `actualyze-ai`)
+> - `{repo}` - Repository name (e.g., `mage`)
+> - `{analysis_id}` - Numeric analysis ID from the list commands
 
 ### List All Code Scanning Analyses
 

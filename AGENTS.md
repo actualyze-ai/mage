@@ -338,7 +338,7 @@ Runs on every pull request and merge queue:
 
 Triggered by `v*` tags (e.g., `v1.16.0`):
 - Uses goreleaser v2
-- Builds: linux/amd64, darwin/arm64
+- Builds: linux/amd64, linux/arm64, darwin/universal, windows/amd64
 - Generates SBOM in SPDX JSON format
 - Creates GitHub Release with binaries and checksums
 
